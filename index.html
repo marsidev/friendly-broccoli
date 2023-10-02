@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<link rel="icon" type="image/svg+xml" href="/vite.svg" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Turnstile &dash; Dummy Login Demo</title>
+	<link rel="stylesheet" href="/src/style.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.1/css/bootstrap.min.css"
+		integrity="sha512-siwe/oXMhSjGCwLn+scraPOWrJxHlUgMBMZXdPe2Tnk3I0x3ESCoLz7WZ5NTH6SZrywMY+PB1cjyqJ5jAluCOg=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css"
+		integrity="sha512-5PV92qsds/16vyYIJo3T/As4m2d8b6oWYfoqV+vtizRB6KhF1F9kYzWzQmsO6T3z3QG2Xdhrx7FQ+5R1LiQdUA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=_turnstileCb" async defer></script>
+</head>
+
+<body>
+	<main class="form-signin">
+		<form class="form">
+			<h2 class="h3 mb-3 fw-normal">Turnstile &dash; Dummy Login Demo</h2>
+
+			<div class="form-floating">
+				<input type="text" id="user" class="form-control">
+				<label for="user">User name</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="password" id="pass" class="form-control" autocomplete="off" readonly
+					value="CorrectHorseBatteryStaple">
+				<label for="pass">Password (dummy)</label>
+			</div>
+
+			<div class="checkbox mb-3">
+				<!-- The Turnstile widget will be injected in the following div. -->
+				<div id="myWidget"></div>
+			</div>
+		</form>
+	</main>
+
+	<script type="module" src="/src/main.ts"></script>
+</body>
+
+<script>
+	function _turnstileCb () {
+		console.debug('_turnstileCb called');
+
+		window.turnstile.render('#myWidget', {
+			// sitekey: '1x00000000000000000000AA', // always pass
+			// sitekey: '2x00000000000000000000AB', // always fail
+			sitekey: '3x00000000000000000000FF', // force interactive challenge
+			theme: 'light',
+			callback: (token) => console.log('success', { token }),
+			'error-callback': (code) => console.log('error', { code }),
+			'before-interactive-callback': (data) => console.log('before-interactive', { data }),
+			'after-interactive-callback': (data) => console.log('after-interactive', { data }),
+		});
+	}
+</script>
+
+</html>
